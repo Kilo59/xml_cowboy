@@ -6,6 +6,32 @@ Using standard Python Library Read, transform and write multiple XML files into 
 >xml.etree.ElementTree
 https://docs.python.org/3/library/xml.etree.elementtree.html#xml.etree.ElementTree.ElementTree._setroot
 
+### Selected methods and Examples
+
+#### SubElement
+`xml.etree.ElementTree.SubElement(parent, tag, attrib={}, **extra)`
+
+  >Subelement factory. This function creates an element instance, and appends it to an existing element.
+
+  >The element name, attribute names, and attribute values can be either bytestrings or Unicode strings. parent is the parent element. tag is the subelement name. attrib is an optional dictionary, containing element attributes. extra contains additional attributes, given as keyword arguments. Returns an element instance.
+
+### Modifying an XML File
+
+>ElementTree provides a simple way to build XML documents and write them to files. The ElementTree.write() method serves this purpose.
+
+>Once created, an Element object may be manipulated by directly changing its fields (such as Element.text), adding and modifying attributes (Element.set() method), as well as adding new children (for example with Element.append()).
+
+>Let’s say we want to add one to each country’s rank, and add an updated attribute to the rank element:
+```python
+>>> for rank in root.iter('rank'):
+...     new_rank = int(rank.text) + 1
+...     rank.text = str(new_rank)
+...     rank.set('updated', 'yes')
+...
+>>> tree.write('output.xml')
+```
+
+
 ### Supported XPath syntax
 Syntax  |Meaning  
 ----------|-------
@@ -19,6 +45,7 @@ tag       |	Selects all child elements with the given tag. For example, spam sel
 [tag]	    | Selects all elements that have a child named tag. Only immediate children are supported.
 [tag='text']  |	Selects all elements that have a child named tag whose complete text content, including descendants, equals the given text.
 [position]	|  Selects all elements that are located at the given position. The position can be either an integer (1 is the first position), the expression last() (for the last position), or a position relative to the last position (e.g. last()-1).
+
 
 ### Element Objects
 `class xml.etree.ElementTree.Element(tag, attrib={}, **extra)`
