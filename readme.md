@@ -2,11 +2,11 @@
 ## Read, Wrangle and Write XML file
 Using standard Python Library Read, transform and write multiple XML files into single unified file.
 
-### Modules
+## Modules
 >xml.etree.ElementTree
 https://docs.python.org/3/library/xml.etree.elementtree.html#xml.etree.ElementTree.ElementTree._setroot
 
-### Selected methods and Examples
+## Selected methods and Examples
 
 #### SubElement
 `xml.etree.ElementTree.SubElement(parent, tag, attrib={}, **extra)`
@@ -15,7 +15,7 @@ https://docs.python.org/3/library/xml.etree.elementtree.html#xml.etree.ElementTr
 
   >The element name, attribute names, and attribute values can be either bytestrings or Unicode strings. parent is the parent element. tag is the subelement name. attrib is an optional dictionary, containing element attributes. extra contains additional attributes, given as keyword arguments. Returns an element instance.
 
-### Modifying an XML File
+#### Modifying an XML File
 
 >ElementTree provides a simple way to build XML documents and write them to files. The ElementTree.write() method serves this purpose.
 
@@ -32,7 +32,7 @@ https://docs.python.org/3/library/xml.etree.elementtree.html#xml.etree.ElementTr
 ```
 
 
-### Supported XPath syntax
+## Supported XPath syntax
 Syntax  |Meaning  
 ----------|-------
 tag       |	Selects all child elements with the given tag. For example, spam selects all child elements named spam, and spam/egg selects all grandchildren named egg in all children named spam.
@@ -47,7 +47,7 @@ tag       |	Selects all child elements with the given tag. For example, spam sel
 [position]	|  Selects all elements that are located at the given position. The position can be either an integer (1 is the first position), the expression last() (for the last position), or a position relative to the last position (e.g. last()-1).
 
 
-### Element Objects
+## Element Objects
 `class xml.etree.ElementTree.Element(tag, attrib={}, **extra)`
 ```
 Element class. This class defines the Element interface, and provides a reference implementation of this interface.
