@@ -15,9 +15,9 @@ def return_dictnry_list(filename):
 
     with open(filename) as csvfile:
         reader = csv.DictReader(csvfile)
-        print(type(reader))
+        # print(type(reader))
         for row in reader:
-            # print(row)
+            print(row)
             list_dict1.append(row)
 
     return list_dict1
@@ -27,15 +27,26 @@ def return_dictnry_list(filename):
 def setup_keyfield(dictionary_list, key_field):
     key_value_list = []
     for dic in dictionary_list:
-        print(key_field, dic[key_field])
-        # new_dictionary[key_field] = dic[key_field]
-        # key_value_list.append((key_field, dic[key_field]))
-        key_value_list.append((dic[key_field], key_field))
-    # print(new_dictionary)
-    print(key_value_list)
-    new_dictionary = dict(key_value_list)
-    print(new_dictionary)
-    return None
+        # print(key_field, dic[key_field])
+        print('hate_food', dic['hate_food'])
+        key_value_list.append((dic[key_field],
+                              ('hate_food', dic['hate_food'])))
+    resultant_dict = dict(key_value_list)
+    return resultant_dict
+
+
+# def setup_keyfield(dictionary_list, key_field):
+#     key_value_list = []
+#     for dic in dictionary_list:
+#         # print(key_field, dic[key_field])
+#         key_value_list.append((dic[key_field], key_field))
+#     resultant_dict = dict(key_value_list)
+#     return resultant_dict
+
+
+def populate_dictionary(input_dict, resultant_dict):
+    pass
+    return
 ###########
 
 
