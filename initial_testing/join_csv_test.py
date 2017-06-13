@@ -26,37 +26,16 @@ def return_dictnry_list(filename):
 # Create 2 item tuple (key_field, value) use to create dictionary
 def setup_keyfield(dictionary_list, key_field):
     key_value_list = []
-    key_value_list2 = []
-    key_value_list3 = []
     for dic in dictionary_list:
-        # Test Programaticly
-        dict3 = {}
+        # Pull all k,v pairs except the key_field
+        nested_dict = {}
         for k, v in dic.items():
             if k != key_field:
-                print(k, v)
-                dict3[k] = v
-        print(dict3)
-        # Test3
-        # key_value_list3.append((dic[key_field, dict3]))
-        key_value_list3.append((dic[key_field], (dict3)))
-        resultant_dict3 = dict(key_value_list3)
-        print('Test3', key_value_list3)
-        print(resultant_dict3)
-        # Test 1 item list
-        # print('hate_food', dic['hate_food'], end=' ')
-        test_list2 = {'hate_food': dic['hate_food'],
-                      'fav_food': dic['fav_food']}
-        # print(test_list2)
-        key_value_list2.append((dic[key_field],
-                                (test_list2)))
-        print('TestL', key_value_list2)
-        resultant_dict2 = dict(key_value_list2)
-        print('TestD', resultant_dict2)
+                nested_dict[k] = v
 
-        key_value_list.append((dic[key_field],
-                               ('hate_food', dic['hate_food'])))
-    resultant_dict = dict(key_value_list)
-    print('Orginal', resultant_dict)
+        key_value_list.append((dic[key_field], (nested_dict)))
+        resultant_dict = dict(key_value_list)
+
     return resultant_dict
 
 
@@ -80,4 +59,4 @@ file2 = return_dictnry_list('drink.csv')
 
 # print(file2)
 # print(file1)
-setup_keyfield(file1, 'person_id')
+print(setup_keyfield(file1, 'person_id'))
