@@ -30,7 +30,8 @@ def setup_keyfield(dictionary_list, key_field):
     for dic in dictionary_list:
         # Test 1 item list
         print('hate_food', dic['hate_food'], end=' ')
-        test_list2 = ['hate_food', dic['hate_food']]
+        test_list2 = {'hate_food': dic['hate_food'],
+                      'fav_food': dic['fav_food']}
         print(test_list2)
         key_value_list2.append((dic[key_field],
                                 (test_list2)))
@@ -41,6 +42,7 @@ def setup_keyfield(dictionary_list, key_field):
         key_value_list.append((dic[key_field],
                                ('hate_food', dic['hate_food'])))
     resultant_dict = dict(key_value_list)
+    print('Orginal', resultant_dict)
     return resultant_dict
 
 
@@ -64,4 +66,4 @@ file2 = return_dictnry_list('drink.csv')
 
 # print(file2)
 # print(file1)
-print(setup_keyfield(file1, 'person_id'))
+setup_keyfield(file1, 'person_id')
