@@ -17,7 +17,7 @@ def return_dictnry_list(filename):
         reader = csv.DictReader(csvfile)
         # print(type(reader))
         for row in reader:
-            print(row)
+            # print(row)
             list_dict1.append(row)
 
     return list_dict1
@@ -26,11 +26,20 @@ def return_dictnry_list(filename):
 # Create 2 item tuple (key_field, value) use to create dictionary
 def setup_keyfield(dictionary_list, key_field):
     key_value_list = []
+    key_value_list2 = []
     for dic in dictionary_list:
-        # print(key_field, dic[key_field])
-        print('hate_food', dic['hate_food'])
+        # Test 1 item list
+        print('hate_food', dic['hate_food'], end=' ')
+        test_list2 = ['hate_food', dic['hate_food']]
+        print(test_list2)
+        key_value_list2.append((dic[key_field],
+                                (test_list2)))
+        print('TestL', key_value_list2)
+        resultant_dict2 = dict(key_value_list2)
+        print('TestD', resultant_dict2)
+
         key_value_list.append((dic[key_field],
-                              ('hate_food', dic['hate_food'])))
+                               ('hate_food', dic['hate_food'])))
     resultant_dict = dict(key_value_list)
     return resultant_dict
 
