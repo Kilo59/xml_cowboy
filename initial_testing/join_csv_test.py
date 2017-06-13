@@ -27,12 +27,26 @@ def return_dictnry_list(filename):
 def setup_keyfield(dictionary_list, key_field):
     key_value_list = []
     key_value_list2 = []
+    key_value_list3 = []
     for dic in dictionary_list:
+        # Test Programaticly
+        dict3 = {}
+        for k, v in dic.items():
+            if k != key_field:
+                print(k, v)
+                dict3[k] = v
+        print(dict3)
+        # Test3
+        # key_value_list3.append((dic[key_field, dict3]))
+        key_value_list3.append((dic[key_field], (dict3)))
+        resultant_dict3 = dict(key_value_list3)
+        print('Test3', key_value_list3)
+        print(resultant_dict3)
         # Test 1 item list
-        print('hate_food', dic['hate_food'], end=' ')
+        # print('hate_food', dic['hate_food'], end=' ')
         test_list2 = {'hate_food': dic['hate_food'],
                       'fav_food': dic['fav_food']}
-        print(test_list2)
+        # print(test_list2)
         key_value_list2.append((dic[key_field],
                                 (test_list2)))
         print('TestL', key_value_list2)
