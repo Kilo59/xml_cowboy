@@ -66,8 +66,15 @@ file2 = return_dictnry_list('drink.csv')
 dict1 = setup_keyfield(file1, 'person_id')
 dict2 = setup_keyfield(file2, 'person_id')
 
-print(dict1)
-print(dict2)
+print('food.csv')
+pprint.pprint(dict1)
+print('drink.csv')
+pprint.pprint(dict2)
 
 deep_update(dict1, dict2)
+print('Combined')
 pprint.pprint(dict1)
+
+dict3 = setup_keyfield(return_dictnry_list('foods.csv'), 'person_id')
+print('Test3')
+pprint.pprint(dict3)
