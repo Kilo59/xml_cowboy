@@ -66,6 +66,28 @@ person_id,name,fav_food,hate_food,fav_drink
 Top level class.
 Result of the merging of 1 or more `data_object`s
 
+Parameter      | Type
+----------------|------
+key_field_name | positional
+core_filename | positional
+suppl_filename=None | key word
+excluded_fields=[] | key word
+
+| Attribute |
+|-----------|
+|key_field_name|
+|core_filename|
+|suppl_filename|
+|data_grp_core|
+|num_data_grps |
+|data_grp_suppl |
+|dictionary |
+|fields |
+|excluded_fields |
+|report_obj |
+
+
+
 ###### data_object
 Virtual representation of a CSV file.
 Parses and processes CSV file.
