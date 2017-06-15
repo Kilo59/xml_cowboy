@@ -53,3 +53,24 @@ person_id,name,fav_food,hate_food,fav_drink
 05,Eric,chocolate,spearmint,Milkshake
 07,Gary,chicken,garbage,Dr.Pepper
 ```
+---
+#### Class Layout
+
+3 major classes<br>
+--`data_grp` <br>
+---->`data_object`(s)<br>
+---->`report_obj`
+
+### data_grp
+
+Top level class.
+Result of the merging of 1 or more `data_object`s
+
+###### data_object
+Virtual representation of a CSV file.
+Parses and processes CSV file.
+
+###### report obj*ect*
+
+Contains details and instructions for producing the report.
+Creates report.
