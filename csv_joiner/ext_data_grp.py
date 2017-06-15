@@ -158,7 +158,7 @@ xdg2 = data_grp('person_id', 'foods.csv', 'drink.csv', report_fields=report_fiel
 xdg2.make_report()
 
 report_fields3 = ['person_id', 'fav_food', 'hate_food', 'fav_drink', 'name']
-xdg3 = data_grp('person_id', 'foods.csv', 'drink.csv', report_fields=report_fields2)
+xdg3 = data_grp('person_id', 'foods.csv', 'drink.csv', report_fields=report_fields3)
 xdg3.make_report(report_name='name_last.csv')
 ####################
 # CSV output test
