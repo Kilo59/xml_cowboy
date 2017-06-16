@@ -58,7 +58,8 @@ class data_grp(object):
         if self.suppl_filename is not None:
             suppl_dict = data_grp_suppl.dictionary
             # check for key_field
-            if self.key_field_name == suppl_dict['PRIMARY_KEY']:
+            # if self.key_field_name == suppl_dict['PRIMARY_KEY']:
+            if self.key_field_name == data_grp_suppl.key_field_name:
                 melded_dictionary = self.deep_update(core_dict, suppl_dict)
                 self.num_data_grps = self.num_data_grps + 1
                 return melded_dictionary
@@ -68,10 +69,11 @@ class data_grp(object):
         else:
             return core_dict
 
+    # Return dictionary ommitting  the "PRIMARY_KEY field"
     def get_dictionary(self, strip_pkey=True):
         returned_dict = copy.deepcopy(self.dictionary)
-        if strip_pkey is True:
-            returned_dict.pop('PRIMARY_KEY')
+        # if strip_pkey is True:
+        #     returned_dict.pop('PRIMARY_KEY')
         # for k in returned_dict.keys():
         #         if k not in self.report_fields:
         #             returned_dict.pop(k)
@@ -113,15 +115,14 @@ class data_object(object):
             # Pull all k,v pairs except the key_field
             nested_dict = {}
             for k, v in dic.items():
-                if k != '0':  # REMOVE
-                    nested_dict[k] = v
-                    if k not in self.o_fields:
-                        self.o_fields.append(k)
+                nested_dict[k] = v
+                if k not in self.o_fields:
+                    self.o_fields.append(k)
             key_value_list.append((dic[key_field_name], (nested_dict)))
         # End dictionary loop
         resultant_dict = dict(key_value_list)
 
-        resultant_dict.update({'PRIMARY_KEY': key_field_name})
+        # resultant_dict.update({'PRIMARY_KEY': key_field_name})
         pprint.pprint(resultant_dict)
         return resultant_dict
 
