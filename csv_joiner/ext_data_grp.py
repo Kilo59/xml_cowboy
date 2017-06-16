@@ -79,14 +79,13 @@ class data_grp(object):
                     # print('1', field)
                     if field not in self.report_fields:
                         record_d.pop(field, 'POP')
-        pprint.pprint(returned_dict)
         return returned_dict
 
     def str_dictionary(self):
         return pprint.pformat(self.get_dictionary)
 
     def make_report(self, report_name='report.csv'):
-        self.report_obj.write_report(report_name)
+        self.report_obj.write_report(output_name=report_name)
         return
 
 
@@ -146,10 +145,8 @@ class report_obj(object):
         with open(output_name, "w") as f:
             w = csv.DictWriter(f, self.r_fields, lineterminator='\n')
             w.writeheader()
-            # print('R_FIELDS', self.r_fields)  # TEST STATEMENT
             # sort by primary_key, write each record as a row
             for pk, record_d in sorted(self.r_dictionary.items()):
-                print(record_d)
                 w.writerow(record_d)
         return None
 ######################
@@ -164,10 +161,10 @@ print(os.getcwd())
 ####################
 # CSV output test
 ####################
-report_fields2 = ['person_id', 'name', 'fav_food', 'hate_food']
+report_fields2 = ['name', 'fav_food', 'hate_food']
 xdg2 = data_grp('person_id', 'foods.csv', 'drink.csv', report_fields=report_fields2)
-# print(xdg2)
-xdg2.make_report()
+print(xdg2)
+xdg2.make_report(report_name='min_report.csv')
 # report_fields3 = ['person_id', 'fav_food', 'hate_food', 'fav_drink', 'name']
 # xdg3 = data_grp('person_id', 'foods.csv', 'drink.csv', report_fields=report_fields3)
 # xdg3.make_report(report_name='name_last.csv')
