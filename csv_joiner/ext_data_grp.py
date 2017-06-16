@@ -70,6 +70,16 @@ class data_grp(object):
 
     def get_dictionary(self):
         returned_dict = copy.deepcopy(self.dictionary)
+        # iterate through nested dictionary
+        # remove fields not used in report
+        if self.report_fields[0] != 'all':
+            for record_d in returned_dict.values():
+                # print('0', record_d)
+                for field in list(record_d.keys()):
+                    # print('1', field)
+                    if field not in self.report_fields:
+                        record_d.pop(field, 'POP')
+        pprint.pprint(returned_dict)
         return returned_dict
 
     def str_dictionary(self):
@@ -85,7 +95,7 @@ class data_object(object):
     def __init__(self, key_field_name, filename):
         self.key_field_name = key_field_name
         self.filename = filename
-        self.o_fields = [self.key_field_name]
+        self.o_fields = []
         self.dictionary = self.setup_keyfield(self.return_dictnry_list(self.filename), self.key_field_name)
 
     def __str__(self):
@@ -139,6 +149,7 @@ class report_obj(object):
             # print('R_FIELDS', self.r_fields)  # TEST STATEMENT
             # sort by primary_key, write each record as a row
             for pk, record_d in sorted(self.r_dictionary.items()):
+                print(record_d)
                 w.writerow(record_d)
         return None
 ######################
@@ -153,9 +164,9 @@ print(os.getcwd())
 ####################
 # CSV output test
 ####################
-report_fields2 = ['person_id', 'name', 'fav_food', 'hate_food', 'fav_drink']
+report_fields2 = ['person_id', 'name', 'fav_food', 'hate_food']
 xdg2 = data_grp('person_id', 'foods.csv', 'drink.csv', report_fields=report_fields2)
-print(xdg2)
+# print(xdg2)
 xdg2.make_report()
 # report_fields3 = ['person_id', 'fav_food', 'hate_food', 'fav_drink', 'name']
 # xdg3 = data_grp('person_id', 'foods.csv', 'drink.csv', report_fields=report_fields3)
