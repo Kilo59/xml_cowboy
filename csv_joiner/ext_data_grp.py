@@ -3,6 +3,8 @@
 import csv
 import collections
 import pprint
+import copy
+import os
 # import itertools
 # import sys
 
@@ -13,19 +15,26 @@ import pprint
 
 
 # combined_data_grp  holds 1 or more data_groups and "joins" them on a common field
-class x_data_grp(object):
+class data_grp(object):
     # instiate object
-    def __init__(self, key_field_name, core_filename, suppl_filename=None):
+    def __init__(self, key_field_name, core_filename, suppl_filename=None, report_fields=['all']):
             self.key_field_name = key_field_name
             self.core_filename = core_filename
             self.suppl_filename = suppl_filename
-            self.data_grp_core = data_group(self.key_field_name, self.core_filename)
+            self.data_grp_core = data_object(self.key_field_name, self.core_filename)
             self.num_data_grps = 1
             if self.suppl_filename is not None:
-                self.data_grp_suppl = data_group(self.key_field_name, self.suppl_filename)
+                self.data_grp_suppl = data_object(self.key_field_name, self.suppl_filename)
                 self.dictionary = self.melder(self.data_grp_core, self.data_grp_suppl)
+                self.fields = list(set(self.data_grp_core.o_fields + self.data_grp_suppl.o_fields))
             else:
                 self.dictionary = self.data_grp_core.dictionary
+                self.fields = self.data_grp_core.o_fields
+            if report_fields[0] == 'all':
+                self.report_fields = self.fields  # use all fields
+            elif len(report_fields) > 1:  # use specified fields
+                self.report_fields = report_fields
+            self.report_obj = report_obj(self.get_dictionary(), self.report_fields)
 
     def __str__(self):
         # return pprint.pformat(self.melded_dictionary)
@@ -49,7 +58,7 @@ class x_data_grp(object):
         if self.suppl_filename is not None:
             suppl_dict = data_grp_suppl.dictionary
             # check for key_field
-            if self.key_field_name == suppl_dict['PRIMARY_KEY']:
+            if self.key_field_name == data_grp_suppl.key_field_name:
                 melded_dictionary = self.deep_update(core_dict, suppl_dict)
                 self.num_data_grps = self.num_data_grps + 1
                 return melded_dictionary
@@ -59,12 +68,33 @@ class x_data_grp(object):
         else:
             return core_dict
 
+    def get_dictionary(self):
+        returned_dict = copy.deepcopy(self.dictionary)
+        # iterate through nested dictionary
+        # remove fields not used in report
+        if self.report_fields[0] != 'all':
+            for record_d in returned_dict.values():
+                # print('0', record_d)
+                for field in list(record_d.keys()):
+                    # print('1', field)
+                    if field not in self.report_fields:
+                        record_d.pop(field, 'POP')
+        return returned_dict
 
-class data_group(object):
+    def str_dictionary(self):
+        return pprint.pformat(self.get_dictionary)
+
+    def make_report(self, report_name='report.csv'):
+        self.report_obj.write_report(output_name=report_name)
+        return
+
+
+class data_object(object):
     # instiate object
     def __init__(self, key_field_name, filename):
         self.key_field_name = key_field_name
         self.filename = filename
+        self.o_fields = []
         self.dictionary = self.setup_keyfield(self.return_dictnry_list(self.filename), self.key_field_name)
 
     def __str__(self):
@@ -87,40 +117,56 @@ class data_group(object):
             # Pull all k,v pairs except the key_field
             nested_dict = {}
             for k, v in dic.items():
-                if k != key_field_name:
-                    nested_dict[k] = v
-
+                nested_dict[k] = v
+                if k not in self.o_fields:
+                    self.o_fields.append(k)
             key_value_list.append((dic[key_field_name], (nested_dict)))
-            resultant_dict = dict(key_value_list)
-            resultant_dict.update({'PRIMARY_KEY': key_field_name})
-
+        # End dictionary loop
+        resultant_dict = dict(key_value_list)
+        # pprint.pprint(resultant_dict) #  TEST STATEMENT
         return resultant_dict
+
+
+class report_obj(object):
+    # instiate object
+    def __init__(self, r_dictionary, r_fields, report_name=None, r_type='DEFAULT', r_excld_fields=[]):
+            self.report_name = report_name
+            self.r_type = r_type
+            self.r_dictionary = r_dictionary
+            self.r_fields = r_fields
+            self.r_excld_fields = r_excld_fields
+            self.headers = True
+
+    def mergedict(self, a, b):
+        a.update(b)
+        return a
+
+    def write_report(self, output_name='report.csv'):
+        with open(output_name, "w") as f:
+            w = csv.DictWriter(f, self.r_fields, lineterminator='\n')
+            w.writeheader()
+            # sort by primary_key, write each record as a row
+            for pk, record_d in sorted(self.r_dictionary.items()):
+                w.writerow(record_d)
+        return None
 ######################
 #  END CLASS DEFINITION
 ######################
 
 
-xdg2 = x_data_grp('person_id', 'foods.csv', 'drink.csv')
-print(xdg2)
-# xdg1 = x_data_grp('person_id', 'foods.csv')
-# print(xdg1)
-dict2 = xdg2.dictionary
-
-
+# TODO: allow for fields to be excluded from report
+# TODO: pass report fields in make_report() function not during data_grp() creation
+# os.chdir('C:\\xml_cowboy\\csv_joiner')  # REMOVE BEFORE PULL
+print(os.getcwd())
 ####################
 # CSV output test
 ####################
-
-def mergedict(a, b):
-    a.update(b)
-    return a
-
-
-header_list = ['person_id', 'name', 'fav_food', 'hate_food', 'fav_drink']
-
-with open("test_output.csv", "w") as f:
-    w = csv.DictWriter(f, header_list)
-    w.writeheader()
-    for k, d in sorted(dict2.items()):
-        if k != 'PRIMARY_KEY':  # TODO: strip this field from dictionary
-            w.writerow(mergedict({header_list[0]: k}, d))
+report_fields2 = ['name', 'fav_food', 'hate_food']
+dg2 = data_grp('person_id', 'foods.csv', 'drink.csv', report_fields=report_fields2)
+print(dg2)
+dg2.make_report(report_name='min_report.csv')
+print('*' * 40)
+report_fields3 = ['person_id', 'fav_food', 'hate_food', 'fav_drink', 'name']
+dg3 = data_grp('person_id', 'foods.csv', 'drink.csv', report_fields=report_fields3)
+print(dg2)
+dg3.make_report(report_name='name_last.csv')

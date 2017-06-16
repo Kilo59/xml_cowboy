@@ -1,7 +1,9 @@
 # CSV "Joiner" Readme
 
 Idea behind this script is to allow the grouping of multiple CSV files based on a common field with unique values.
-This process is analogous to a **"Join"** in SQL
+This process is analogous to a **"Join"** in SQL.
+<br>
+>Note: This could also be made to work with XML files instead of CSV
 
 
 Data from CSV files is stored in a *nested data dictionary*
@@ -44,6 +46,8 @@ person_id,fav_drink,name
 ```
 
 ### Example Output
+
+**"All fields"**
 ```
 person_id,name,fav_food,hate_food,fav_drink
 01,Alex,pizza,peas,Coke
@@ -53,3 +57,72 @@ person_id,name,fav_food,hate_food,fav_drink
 05,Eric,chocolate,spearmint,Milkshake
 07,Gary,chicken,garbage,Dr.Pepper
 ```
+**Exclude fields**
+```
+name,fav_food,hate_food
+Alex,pizza,peas
+Brad,ice cream,dirt
+Chuck,pasta,kale
+Dale,steak,spinach
+Eric,chocolate,spearmint
+Gary,chicken,garbage
+```
+-----
+#### Class Layout
+
+3 major classes<br>
+--`data_grp` <br>
+---->`data_object`(s)<br>
+---->`report_obj`
+
+### data_grp
+
+Top level class.
+Result of the merging of 1 or more `data_object`s
+
+Parameter      | Type
+----------------|------
+key_field_name | positional
+core_filename | positional
+suppl_filename=None | key word
+excluded_fields=[] | key word
+
+| Attribute |
+|-----------|
+|key_field_name|
+|core_filename|
+|suppl_filename|
+|data_grp_core|
+|num_data_grps |
+|data_grp_suppl |
+|dictionary |
+|fields |
+|excluded_fields |
+|report_obj |
+
+
+
+###### data_object
+Virtual representation of a CSV file.
+Parses and processes CSV file.
+
+|Attribute|
+|-----------|
+|key_field_name|
+|filename|
+|o_fields|
+|dictionary|
+|key_field_name|
+
+###### report obj*ect*
+Contains details and instructions for producing the report.
+Creates report.
+
+|Attribute|
+|-----------|
+|report_name|
+|r_type|
+|r_dictionary|
+|r_fields|
+|r_excld_fields|
+|headers|
