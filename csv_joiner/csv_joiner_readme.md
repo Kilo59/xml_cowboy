@@ -46,6 +46,8 @@ person_id,fav_drink,name
 ```
 
 ### Example Output
+
+**"All fields"**
 ```
 person_id,name,fav_food,hate_food,fav_drink
 01,Alex,pizza,peas,Coke
@@ -55,7 +57,17 @@ person_id,name,fav_food,hate_food,fav_drink
 05,Eric,chocolate,spearmint,Milkshake
 07,Gary,chicken,garbage,Dr.Pepper
 ```
----
+**Exclude fields**
+```
+name,fav_food,hate_food
+Alex,pizza,peas
+Brad,ice cream,dirt
+Chuck,pasta,kale
+Dale,steak,spinach
+Eric,chocolate,spearmint
+Gary,chicken,garbage
+```
+-----
 #### Class Layout
 
 3 major classes<br>
@@ -94,7 +106,23 @@ excluded_fields=[] | key word
 Virtual representation of a CSV file.
 Parses and processes CSV file.
 
-###### report obj*ect*
+|Attribute|
+|-----------|
+|key_field_name|
+|filename|
+|o_fields|
+|dictionary|
+|key_field_name|
 
+###### report obj*ect*
 Contains details and instructions for producing the report.
 Creates report.
+
+|Attribute|
+|-----------|
+|report_name|
+|r_type|
+|r_dictionary|
+|r_fields|
+|r_excld_fields|
+|headers|
