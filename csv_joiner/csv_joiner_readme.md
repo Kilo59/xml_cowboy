@@ -1,7 +1,9 @@
 # CSV "Joiner" Readme
 
 Idea behind this script is to allow the grouping of multiple CSV files based on a common field with unique values.
-This process is analogous to a **"Join"** in SQL
+This process is analogous to a **"Join"** in SQL.
+<br>
+>Note: This could also be made to work with XML files instead of CSV
 
 
 Data from CSV files is stored in a *nested data dictionary*
