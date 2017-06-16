@@ -162,9 +162,11 @@ print(os.getcwd())
 # CSV output test
 ####################
 report_fields2 = ['name', 'fav_food', 'hate_food']
-xdg2 = data_grp('person_id', 'foods.csv', 'drink.csv', report_fields=report_fields2)
-print(xdg2)
-xdg2.make_report(report_name='min_report.csv')
-# report_fields3 = ['person_id', 'fav_food', 'hate_food', 'fav_drink', 'name']
-# xdg3 = data_grp('person_id', 'foods.csv', 'drink.csv', report_fields=report_fields3)
-# xdg3.make_report(report_name='name_last.csv')
+dg2 = data_grp('person_id', 'foods.csv', 'drink.csv', report_fields=report_fields2)
+print(dg2)
+dg2.make_report(report_name='min_report.csv')
+print('*' * 40)
+report_fields3 = ['person_id', 'fav_food', 'hate_food', 'fav_drink', 'name']
+dg3 = data_grp('person_id', 'foods.csv', 'drink.csv', report_fields=report_fields3)
+print(dg2)
+dg3.make_report(report_name='name_last.csv')
