@@ -156,7 +156,7 @@ class report_obj(object):
 
 # TODO: allow for fields to be excluded from report
 # TODO: pass report fields in make_report() function not during data_grp() creation
-os.chdir('C:\\Users\\ggore\\Dropbox\\GitHub\\xml_cowboy\\csv_joiner')  # REMOVE BEFORE PULL
+# os.chdir('C:\\xml_cowboy\\csv_joiner')  # REMOVE BEFORE PULL
 print(os.getcwd())
 ####################
 # CSV output test
