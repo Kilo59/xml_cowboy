@@ -58,7 +58,6 @@ class data_grp(object):
         if self.suppl_filename is not None:
             suppl_dict = data_grp_suppl.dictionary
             # check for key_field
-            # if self.key_field_name == suppl_dict['PRIMARY_KEY']:
             if self.key_field_name == data_grp_suppl.key_field_name:
                 melded_dictionary = self.deep_update(core_dict, suppl_dict)
                 self.num_data_grps = self.num_data_grps + 1
@@ -69,18 +68,12 @@ class data_grp(object):
         else:
             return core_dict
 
-    # Return dictionary ommitting  the "PRIMARY_KEY field"
-    def get_dictionary(self, strip_pkey=True):
+    def get_dictionary(self):
         returned_dict = copy.deepcopy(self.dictionary)
-        # if strip_pkey is True:
-        #     returned_dict.pop('PRIMARY_KEY')
-        # for k in returned_dict.keys():
-        #         if k not in self.report_fields:
-        #             returned_dict.pop(k)
         return returned_dict
 
-    def str_dictionary(self, strip_key=True):
-        return pprint.pformat(self.get_dictionary(strip_key))
+    def str_dictionary(self):
+        return pprint.pformat(self.get_dictionary)
 
     def make_report(self, report_name='report.csv'):
         self.report_obj.write_report(report_name)
@@ -121,9 +114,7 @@ class data_object(object):
             key_value_list.append((dic[key_field_name], (nested_dict)))
         # End dictionary loop
         resultant_dict = dict(key_value_list)
-
-        # resultant_dict.update({'PRIMARY_KEY': key_field_name})
-        pprint.pprint(resultant_dict)
+        # pprint.pprint(resultant_dict) #  TEST STATEMENT
         return resultant_dict
 
 
@@ -143,11 +134,12 @@ class report_obj(object):
 
     def write_report(self, output_name='report.csv'):
         with open(output_name, "w") as f:
-            w = csv.DictWriter(f, self.r_fields)
+            w = csv.DictWriter(f, self.r_fields, lineterminator='\n')
             w.writeheader()
-            # print('R_FIELDS', self.r_fields)
-            for k, d in sorted(self.r_dictionary.items()):
-                w.writerow(self.mergedict({self.r_fields[0]: k}, d))
+            # print('R_FIELDS', self.r_fields)  # TEST STATEMENT
+            # sort by primary_key, write each record as a row
+            for pk, record_d in sorted(self.r_dictionary.items()):
+                w.writerow(record_d)
         return None
 ######################
 #  END CLASS DEFINITION
@@ -156,7 +148,7 @@ class report_obj(object):
 
 # TODO: allow for fields to be excluded from report
 # TODO: pass report fields in make_report() function not during data_grp() creation
-os.chdir('C:\\Users\\ggore\\Dropbox\\GitHub\\xml_cowboy\\csv_joiner')
+os.chdir('C:\\Users\\ggore\\Dropbox\\GitHub\\xml_cowboy\\csv_joiner')  # REMOVE BEFORE PULL
 print(os.getcwd())
 ####################
 # CSV output test
@@ -165,7 +157,6 @@ report_fields2 = ['person_id', 'name', 'fav_food', 'hate_food', 'fav_drink']
 xdg2 = data_grp('person_id', 'foods.csv', 'drink.csv', report_fields=report_fields2)
 print(xdg2)
 xdg2.make_report()
-
 # report_fields3 = ['person_id', 'fav_food', 'hate_food', 'fav_drink', 'name']
 # xdg3 = data_grp('person_id', 'foods.csv', 'drink.csv', report_fields=report_fields3)
 # xdg3.make_report(report_name='name_last.csv')
