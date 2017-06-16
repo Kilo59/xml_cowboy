@@ -4,6 +4,7 @@ import csv
 import collections
 import pprint
 import copy
+import os
 # import itertools
 # import sys
 
@@ -112,15 +113,16 @@ class data_object(object):
             # Pull all k,v pairs except the key_field
             nested_dict = {}
             for k, v in dic.items():
-                if k != key_field_name:
+                if k != '0':  # REMOVE
                     nested_dict[k] = v
                     if k not in self.o_fields:
                         self.o_fields.append(k)
-
             key_value_list.append((dic[key_field_name], (nested_dict)))
-            resultant_dict = dict(key_value_list)
-            resultant_dict.update({'PRIMARY_KEY': key_field_name})
+        # End dictionary loop
+        resultant_dict = dict(key_value_list)
 
+        resultant_dict.update({'PRIMARY_KEY': key_field_name})
+        pprint.pprint(resultant_dict)
         return resultant_dict
 
 
@@ -142,7 +144,7 @@ class report_obj(object):
         with open(output_name, "w") as f:
             w = csv.DictWriter(f, self.r_fields)
             w.writeheader()
-            print(self.r_fields)
+            # print('R_FIELDS', self.r_fields)
             for k, d in sorted(self.r_dictionary.items()):
                 w.writerow(self.mergedict({self.r_fields[0]: k}, d))
         return None
@@ -153,28 +155,16 @@ class report_obj(object):
 
 # TODO: allow for fields to be excluded from report
 # TODO: pass report fields in make_report() function not during data_grp() creation
-report_fields2 = ['person_id', 'name', 'fav_food', 'hate_food', 'fav_drink']
-xdg2 = data_grp('person_id', 'foods.csv', 'drink.csv', report_fields=report_fields2)
-xdg2.make_report()
-
-report_fields3 = ['person_id', 'fav_food', 'hate_food', 'fav_drink', 'name']
-xdg3 = data_grp('person_id', 'foods.csv', 'drink.csv', report_fields=report_fields3)
-xdg3.make_report(report_name='name_last.csv')
+os.chdir('C:\\Users\\ggore\\Dropbox\\GitHub\\xml_cowboy\\csv_joiner')
+print(os.getcwd())
 ####################
 # CSV output test
 ####################
+report_fields2 = ['person_id', 'name', 'fav_food', 'hate_food', 'fav_drink']
+xdg2 = data_grp('person_id', 'foods.csv', 'drink.csv', report_fields=report_fields2)
+print(xdg2)
+xdg2.make_report()
 
-
-# def mergedict(a, b):
-#     a.update(b)
-#     return a
-
-
-# header_list = ['person_id', 'name', 'fav_food', 'hate_food', 'fav_drink']
-#
-# with open("test_output.csv", "w") as f:
-#     w = csv.DictWriter(f, header_list)
-#     w.writeheader()
-#     for k, d in sorted(dict2.items()):
-#         if k != 'PRIMARY_KEY':  # TODO: strip this field from dictionary
-#             w.writerow(mergedict({header_list[0]: k}, d))
+# report_fields3 = ['person_id', 'fav_food', 'hate_food', 'fav_drink', 'name']
+# xdg3 = data_grp('person_id', 'foods.csv', 'drink.csv', report_fields=report_fields3)
+# xdg3.make_report(report_name='name_last.csv')
